@@ -20,7 +20,7 @@ rest. The smallest boat of the family, after the felucca and the sloop.
 
 <p align="center"><img src="docs/screen.png" width="240" alt="Dinghy's screen: the name, the note played, a keyboard with the keys that sound"></p>
 
-> **Status: 0.1, runs on the FM-1.** Tested on the device: the install, MIDI in (pitch exact, 4 voices), USB audio
+> **Status: 0.3, runs on the FM-1.** Tested on the device: the install, MIDI in (pitch exact, 4 voices), USB audio
 > at 44.1 / 48 kHz, the keys, the screen, the octave kept in flash, and back to another firmware through the hub.
 
 ## What you get
@@ -38,49 +38,77 @@ rest. The smallest boat of the family, after the felucca and the sloop.
 | **Host mode** | The same `dinghy.c` on your computer: the screen as an image, the sound as a WAV. No FM-1 needed to try an idea. |
 | **Checks** | The build fails on what bricks or breaks an FM-1 firmware: a 64-bit division, a call into the chip ROM, too much RAM, a register touched outside `hal/`. |
 
-## Quick start
+## Build your own
+
+From nothing to your own firmware on the FM-1, step by step. Each step works before you go to the next.
+
+### 1. Copy it
+
+On GitHub: **Use this template** (top right on this page) or fork it, then clone your copy. Rename nothing yet:
+first make sure the unchanged Dinghy builds on your machine.
+
+### 2. Set up once
 
 You need Linux on x86-64 (or macOS / Windows with Docker or WSL), Python 3 with Pillow, the JieLi toolchain
-and three files of the JieLi AC79 SDK. Once:
+and three files of the JieLi AC79 SDK:
 
 ```sh
-pip3 install Pillow
+pip3 install Pillow mido python-rtmidi
 tools/get_toolchain.sh                      # JieLi's clang for the chip, to ~/.jieli/toolchain
 git clone --depth 1 --branch AC79NN_SDK_V1.2.1_2023-12-13 \
     https://gitee.com/Jieli-Tech/fw-AC79_AIoT_SDK.git ~/fw-AC79_AIoT_SDK
 ```
 
-Then:
-
-```sh
-./build.sh                                  # -> build/dinghy.fwsc
-tests/run_host.sh                           # -> build/host/dinghy.wav and screen PNGs, no FM-1 needed
-```
-
 On macOS the build runs the toolchain in a `linux/amd64` Docker container by itself (have Docker running).
 `JIELI_TOOLCHAIN` and `AC79_SDK` point elsewhere if your copies live somewhere else.
 
-**Install** your build over USB from the command line (once: `pip3 install mido python-rtmidi`):
+### 3. Hear it without an FM-1
 
 ```sh
-python3 tools/fm1_install.py build/dinghy.fwsc   # asks before it writes; restarts the FM-1 into Dinghy
-python3 tools/fm1_install.py --info              # what runs on the connected FM-1
+tests/run_host.sh                           # -> build/host/dinghy.wav and screen PNGs
 ```
 
-Back to another firmware, or to the official one, with the [FM-1 Firmware Hub](https://fm1.designburgapps.com)
-in Chrome or Edge: Dinghy answers the hub's updater like every firmware there. Installing firmware is at your own
-risk.
+Host mode runs the same `dinghy.c` on your computer: the sound as a WAV, the screen as images. Most ideas can be
+tried here first, in seconds.
 
-## Your first change
+### 4. Your first change
 
-Open [firmware/src/dinghy.c](firmware/src/dinghy.c). The sound is `app_audio()`: it gets an empty buffer of
-stereo frames and adds to it. Make the sine a square:
+Open [firmware/src/dinghy.c](firmware/src/dinghy.c) (~200 lines). The sound is `app_audio()`: it gets an empty
+buffer of stereo frames and adds to it. Make the sine a square:
 
 ```c
 s = ((int32_t)ph < 0 ? 8000 : -8000) * amp >> 15;     /* instead of s = (sine(ph) * amp) >> 15; */
 ```
 
-`tests/run_host.sh` and listen to `build/host/dinghy.wav`. Then `./build.sh` and install. That is the whole loop.
+Run `tests/run_host.sh` again and listen to `build/host/dinghy.wav`. The screen is drawn in `app_main()`, the keys
+are read there too: change the text, add a knob ([docs/API.md](docs/API.md) has every call).
+
+### 5. Onto the FM-1
+
+```sh
+./build.sh                                       # -> build/dinghy.fwsc (fails on what would brick the FM-1)
+python3 tools/fm1_install.py build/dinghy.fwsc   # over USB; asks before it writes, restarts into your build
+python3 tools/fm1_install.py --info              # what runs on the connected FM-1
+```
+
+That is the whole loop: change, hear it on the host, build, install. Back to another firmware, or to the official
+one, with the [FM-1 Firmware Hub](https://fm1.designburgapps.com) in Chrome or Edge: Dinghy (and every copy of it)
+answers the hub's updater like every firmware there. Installing firmware is at your own risk.
+
+### 6. When it goes wrong
+
+- **It crashes:** the screen shows where (the PC), then the FM-1 restarts. Twice at boot and it goes to the
+  USB rescue by itself.
+- **It won't start at all:** hold **OCT-** while switching on: the USB rescue, no sound, only the updater. Install
+  a working build (or another firmware from the hub) from there.
+- **The build refuses:** it checks for a 64-bit division, a call into the chip ROM, too much RAM, a register touched
+  outside `hal/`. [docs/RULES.md](docs/RULES.md) says why each one matters; read it before your first crash.
+
+### 7. Make it yours, release it, get into the hub
+
+Your name and logo, your own package identity (so the FM-1 and the installers tell your firmware from Dinghy),
+a GitHub release with the `.fwsc`, and how to get listed next to the others in the
+[FM-1 Firmware Hub](https://fm1.designburgapps.com): **[docs/MAKE-IT-YOURS.md](docs/MAKE-IT-YOURS.md)**.
 
 ## Where to go next
 
