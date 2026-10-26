@@ -9,14 +9,16 @@ record it.
 
 <p align="center"><img src="docs/ninvave.png" width="240" alt="NINvave's screen: the preset, the song and tempo, the 7 x 16 step grid, the selected track"></p>
 
-> **Status: 0.1 (dev).** Builds and passes the host tests (`tests/run_tests.sh`), plays and records on the host;
-> not yet run on an FM-1.
+> **Status: 0.1 (dev).** Builds, passes the host tests (`tests/run_tests.sh`) and runs on the FM-1 (2026-10-26);
+> more songs and two-bar patterns to come.
 
 Built on [Dinghy](https://github.com/zvenson/dinghy) (zvenson), which carries the platform of
 [Felucca](https://github.com/hugelton/Felucca) (Leo Kuroshita, Hügelton Instruments) and
 [SLOOP](https://github.com/isod89/sloop-fm1) (isod89). Dinghy's own README: [docs/DINGHY.md](docs/DINGHY.md).
 
 ## Playing it
+
+The full guide: **[docs/MANUAL.md](docs/MANUAL.md)**. In short:
 
 | | |
 | --- | --- |
