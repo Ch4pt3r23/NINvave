@@ -1,0 +1,26 @@
+# NINvave: HLAH A for two bars, the next presets (TLIE, SANC, ONLY), CRUSH and DRIVE, the bass played live and recorded
+100 shot
+200 btn 12
+2400 shot
+4400 enc 6 3
+4500 shot
+8500 enc 6 3
+12500 enc 6 3
+12600 shot
+14000 btn 2
+16000 btn 2
+18000 btn 2
+18100 enc 6 -9
+18200 btn 11
+18300 enc 0 5
+18400 btn 13
+18500 keys 0x80
+18700 keys 0
+19000 keys 0x800
+19200 keys 0
+19400 shot
+21000 btn 13
+21100 btn 11
+21200 shot
+22000 btn 12
+23000 end
