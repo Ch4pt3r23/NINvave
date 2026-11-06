@@ -64,7 +64,7 @@ and three files of the JieLi AC79 SDK:
 pip3 install Pillow mido python-rtmidi
 tools/get_toolchain.sh                      # JieLi's clang for the chip, to ~/.jieli/toolchain
 git clone --depth 1 --branch AC79NN_SDK_V1.2.1_2023-12-13 \
-    https://gitee.com/Jieli-Tech/fw-AC79_AIoT_SDK.git ~/fw-AC79_AIoT_SDK
+    https://gitee.com/Jieli-Tech/fw-AC79_AIoT_SDK.git ~/code/fw-AC79_AIoT_SDK
 ```
 
 On macOS the build runs the toolchain in a `linux/amd64` Docker container by itself (have Docker running).

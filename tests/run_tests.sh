@@ -8,7 +8,7 @@
 # update path (ota.c, the loader, tools/fm1_install.py; from the fm1-to-smk37 kit's reference layer,
 # genkigenki/sloop-fm1 smk37) and the packages.
 set -e
-export AC79_SDK="${AC79_SDK:-$HOME/fw-AC79_AIoT_SDK}"   # (fm1pkg_make.py: the SDK files of a package)
+export AC79_SDK="${AC79_SDK:-$HOME/code/fw-AC79_AIoT_SDK}"   # (fm1pkg_make.py: the SDK files of a package)
 cd "$(dirname "$0")/.."
 OUT=build/host
 mkdir -p "$OUT"

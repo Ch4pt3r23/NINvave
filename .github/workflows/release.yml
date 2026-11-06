@@ -33,11 +33,11 @@ jobs:
         run: |
           for i in 1 2 3; do                     # (gitee.com drops a clone now and then: try again)
             git clone --depth 1 --branch AC79NN_SDK_V1.2.1_2023-12-13 \
-                https://gitee.com/Jieli-Tech/fw-AC79_AIoT_SDK.git ~/fw-AC79_AIoT_SDK && break
-            rm -rf ~/fw-AC79_AIoT_SDK
+                https://gitee.com/Jieli-Tech/fw-AC79_AIoT_SDK.git ~/code/fw-AC79_AIoT_SDK && break
+            rm -rf ~/code/fw-AC79_AIoT_SDK
             sleep 20
           done
-          test -d ~/fw-AC79_AIoT_SDK
+          test -d ~/code/fw-AC79_AIoT_SDK
 
       - name: Build (the SMK-37 first, the FM-1 last, as the tests expect)
         run: |
